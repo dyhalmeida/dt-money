@@ -53,4 +53,28 @@ export const GlobalStyle = createGlobalStyle`
     cursor: not-allowed;
   }
 
+  .react-modal-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .react-modal-content {
+    /* Se o modal fica até 576px e não cresce mais que isso
+    já abaixo disso, o mesmo ocupa 100% da tela */
+    width: 100%;
+    max-width: 576px;
+    background: var(--background);
+    padding: 3rem;
+    position: relative; /* Modal precisa ser position relatice para que o botão de fechar
+    possa posicionar no canto superior direito como position absolute. */
+    border-radius: 0.25rem;
+  }
+
 `;

@@ -5,6 +5,7 @@ import { Header } from './components/header';
 import ReactModal from 'react-modal';
 
 import { GlobalStyle } from './styles/global';
+import { NewTransactionModal } from './components/newTransactioModal';
 
 ReactModal.setAppElement('#root');
 
@@ -26,12 +27,10 @@ export function App() {
         onOpenNewTransactionModal={handleOpenNewTransactionModal} 
       />
       <Dashboard />
-      <ReactModal
-        isOpen={isNewTransactionModalOpen}
-        onRequestClose={handleCloseNewTransactionModal}
-      >
-        
-      </ReactModal>
+     <NewTransactionModal 
+        isOpen={isNewTransactionModalOpen} 
+        onRequestClose={handleCloseNewTransactionModal} 
+      />
       <GlobalStyle />
     </>
   );

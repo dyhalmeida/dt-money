@@ -1,13 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../../services/api';
+import { convertCurrencyToBRL, convertDateToBR } from '../../utils';
 import { Container } from './style';
 
+export interface ITransaction {
+  id: number,
+  title: string,
+  type: string,
+  category: string,
+  amount: number,
+  createdAt: string,
+}
+
 export function TransactionsTable() {
+
+  const [transactions, setTransactions] = useState<Array<ITransaction>>([]);
 
   useEffect(() => {
 
     api.get('transactions')
-      .then(response => console.log(response.data));
+      .then(response => setTransactions(response.data.transactions));
 
   }, []);
 
@@ -23,24 +35,14 @@ export function TransactionsTable() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Alimentação</td>
-            <td className='withdraw'> - R$ 800,00</td>
-            <td>Alimentação</td>
-            <td>22/12/2021</td>
-          </tr>
-          <tr>
-            <td>Salário</td>
-            <td className='deposit'>R$ 4.900,00</td>
-            <td>Receita</td>
-            <td>22/12/2021</td>
-          </tr>
-          <tr>
-            <td>Conta de luz</td>
-            <td className='withdraw'> - R$ 100,97</td>
-            <td>Casa</td>
-            <td>22/12/2021</td>
-          </tr>
+          {transactions.map(transaction => (
+            <tr key={transaction.id}>
+              <td>{transaction.title}</td>
+              <td className={transaction.type}>{convertCurrencyToBRL(transaction.amount)}</td>
+              <td>{transaction.category}</td>
+              <td>{convertDateToBR(transaction.createdAt)}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </Container>

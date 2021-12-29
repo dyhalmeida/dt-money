@@ -3,8 +3,29 @@ import { Container } from './style';
 import incomeSVG from '../../assets/income.svg';
 import outcomeSVG from '../../assets/outcome.svg';
 import totalSVG from '../../assets/total.svg';
+import { useContext } from 'react';
+import { TransactionsContext } from '../../context/TransactionsContext';
+import { convertCurrencyToBRL } from '../../utils';
 
 export function Summary() {
+
+  const { transactions } = useContext(TransactionsContext);
+
+  const summary = transactions.reduce((acc, transaction) => {
+    if (transaction.type === 'deposit') { 
+      acc.deposits += transaction.amount 
+      acc.total += transaction.amount
+    } else {
+      acc.withdraws -= transaction.amount;
+      acc.total -= transaction.amount;
+    }
+    return acc;
+  }, {
+    deposits: 0,
+    withdraws: 0,
+    total: 0
+  });
+
   return (
     <Container>
       <div>
@@ -13,7 +34,7 @@ export function Summary() {
           <img src={incomeSVG} alt="Entradas" />
         </header>
         <strong>
-          R$ 10.000,00
+          {convertCurrencyToBRL(summary.deposits)}
         </strong>
       </div>
 
@@ -23,7 +44,7 @@ export function Summary() {
           <img src={outcomeSVG} alt="Saídas" />
         </header>
         <strong>
-          - R$ 3.000,00
+          {convertCurrencyToBRL(summary.withdraws)}
         </strong>
       </div>
 
@@ -33,7 +54,7 @@ export function Summary() {
           <img src={totalSVG} alt="Total" />
         </header>
         <strong>
-          R$ 7.000,00
+          {convertCurrencyToBRL(summary.total)}
         </strong>
       </div>
     </Container>
